@@ -1,7 +1,33 @@
 {% extends "base.html" %}
 
 {% block content %}
+<h1>{{title}}</h1>
 
+<form action='/new_entry' method='post'>
+    <label>
+        New Blog Title:
+        <br>
+        <input type="text" name='entry_title' value='{{entry_title}}'/>
+    </label>
+    {% with messages = get_flashed_messages(category_filter=['title_error']) %}
+        {% for message in messages %}
+            <p class="error">{{message}}</p>
+        {% endfor %}
+    {% endwith %}
+    <br>
+    <label>
+        Blog Entry:
+        <br>
+        <textarea name='entry_body' value='{{entry_body}}'></textarea>
+    </label>
+    {% with messages = get_flashed_messages(category_filter=['body_error']) %}
+        {% for message in messages %}
+            <p class="error">{{message}}</p>
+        {% endfor %}
+    {% endwith %}
+    <br>
+    <a href='blog'><input type="submit" value='Add Entry' /></a>
+</form>
 
 
 {% endblock %}

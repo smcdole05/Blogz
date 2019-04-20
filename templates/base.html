@@ -4,11 +4,25 @@
     h1 {
         text-align: center;
     }
+    div {
+        display: inline-block;
+    }
+    .error {
+        color: red;
+    }
     </style>
     <head>
         <title>{{title}}</title>
     </head>
 <body>
+
+    <div>
+        <a href='/blog'>Main Blog Page</a>
+    </div>
+
+    <div>
+        <a href='new_entry'>Add a Blog Entry</a>
+    </div>
 
     {% block content %}
     {% endblock %}
