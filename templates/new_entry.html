@@ -3,11 +3,11 @@
 {% block content %}
 <h1>{{title}}</h1>
 
-<form action='/new_entry' method='post'>
+<form action='/new_entry' method='post' id=1>
     <label>
         New Blog Title:
         <br>
-        <input type="text" name='entry_title' value='{{entry_title}}'/>
+        <input type="text" name='entry_title' value='{{entry_title}}' required />
     </label>
     {% with messages = get_flashed_messages(category_filter=['title_error']) %}
         {% for message in messages %}
@@ -15,10 +15,11 @@
         {% endfor %}
     {% endwith %}
     <br>
+    <br>
     <label>
         Blog Entry:
         <br>
-        <textarea name='entry_body' value='{{entry_body}}'></textarea>
+        <textarea name='entry_body' placeholder='{{entry_body}}' form=1 rows=20 cols=50 required></textarea>
     </label>
     {% with messages = get_flashed_messages(category_filter=['body_error']) %}
         {% for message in messages %}

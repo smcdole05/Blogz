@@ -10,6 +10,7 @@ db = SQLAlchemy(app)
 app.secret_key = '12345'
 
 
+
 class Blog(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
@@ -30,7 +31,9 @@ def new_entry():
             new_blog = Blog(blog_title, blog_body)
             db.session.add(new_blog)
             db.session.commit()
-            return redirect('/blog')
+            blog = db.session.query(Blog).order_by(Blog.id.desc()).first()
+            get_id = blog.id
+            return redirect('/blog?id=' + str(get_id))
         else:
             if blog_title == '':
                 flash('Please fill in field', 'title_error')
@@ -45,8 +48,12 @@ def new_entry():
 def index():
 
     blogs = Blog.query.all()
-
-    return render_template('blog.html', title='Build A Blog', blogs=blogs)
+    if request.args:
+        blog_id = request.args.get('id')
+        blog = Blog.query.get(blog_id)
+        return render_template('blog_entry.html', blog=blog)
+    else:
+        return render_template('blog.html', title='Build A Blog', blogs=blogs)
 
 
 if __name__ == '__main__':
