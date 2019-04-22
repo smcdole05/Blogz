@@ -7,7 +7,7 @@
     <label>
         New Blog Title:
         <br>
-        <input type="text" name='entry_title' value='{{entry_title}}' required />
+        <input type="text" name='entry_title' value='{{entry_title}}' />
     </label>
     {% with messages = get_flashed_messages(category_filter=['title_error']) %}
         {% for message in messages %}
@@ -19,7 +19,7 @@
     <label>
         Blog Entry:
         <br>
-        <textarea name='entry_body' placeholder='{{entry_body}}' form=1 rows=20 cols=50 required></textarea>
+        <textarea name='entry_body' form=1 rows=20 cols=50>{{entry_body}}</textarea>
     </label>
     {% with messages = get_flashed_messages(category_filter=['body_error']) %}
         {% for message in messages %}

@@ -36,9 +36,9 @@ def new_entry():
             return redirect('/blog?id=' + str(get_id))
         else:
             if blog_title == '':
-                flash('Please fill in field', 'title_error')
+                flash('Please fill in title field', 'title_error')
             if blog_body == '':
-                flash('Please fill in this field', 'body_error')
+                flash('Please fill in entry field', 'body_error')
             return render_template('new_entry.html', title=title, entry_title=blog_title, entry_body=blog_body)
 
 
