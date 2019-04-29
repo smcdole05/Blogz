@@ -6,6 +6,7 @@
     }
     div {
         display: inline-block;
+        margin-right: 20px;
     }
     .error {
         color: red;
@@ -17,12 +18,26 @@
 <body>
 
     <div>
+        <a href='index'>Home</a>
+    </div>
+
+    <div>
         <a href='blog'>Main Blog Page</a>
     </div>
 
     <div>
         <a href='new_entry'>Add a Blog Entry</a>
     </div>
+
+    {% if session['username'] %}
+    <div>
+        <a href='logout'>logout</a>
+    </div>
+    {% else %}
+    <div>
+        <a href='login'>login</a>
+    </div>
+    {% endif %}
 
     {% block content %}
     {% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Register to Blogz</h1>
+<form action='/signup' method="post">
+    <label>
+        username
+        <input type="text" name="username" value='{{username}}' />
+        <p class='error'>{{username_error}}</p>
+    </label>
+    
+    <br>
+    <label>
+        Password
+        <input type="password" name="password" value='{{password}}' />
+    </label>
+    <p class='error'>{{password_error}}</p>
+    
+    <br>
+    <label>
+        Verify Password
+        <input type="password" name="confirm_password" value='{{password_conf}}' />
+    </label>
+    <p class='error'>{{password_conf_error}}</p>
+ 
+    <br>
+    <input type="submit" value="Submit" />
+    </form>
+    
+    {% if error %}
+        <p class='error'>{{ error }}</p>
+    {% endif %}
+
+{% endblock %}
