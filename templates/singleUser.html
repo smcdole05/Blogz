@@ -2,5 +2,13 @@
 
 {% block content %}
 
+{% for blog in blogs %}
+{% if user.id == blog.owner_id %}
+    <a href='blog?id={{blog.id}}'><h2>{{blog.title}}</h2></a>
+    <p>{{blog.body}}</p>
+    <p>Written by: <a href='blog?user={{blog.owner_id}}''>{{user.username}}</a></p>
+    <hr>
+{% endif %}
+{% endfor %}
 
 {% endblock %}

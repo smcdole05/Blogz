@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Build A Blog</h1>
 
     {% if blogs|length == 0 %}
     <p>No entries yet</p>
@@ -10,8 +9,13 @@
         
         {% for blog in blogs %}
             <a href='blog?id={{blog.id}}'><h2>{{blog.title}}</h2></a>
-        <p>{{blog.body}}</p>
-        <hr>
+            <p>{{blog.body}}</p>
+            {% for user in users %}
+                {% if user.id == blog.owner_id %}
+                <p>Written by: <a href='blog?user={{blog.owner_id}}''>{{user.username}}</a></p>
+                {% endif %}
+            {% endfor %}
+            <hr>
         {% endfor %}
         
 

@@ -9,6 +9,7 @@ app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 app.secret_key = '12345'
 
+
 class Blog(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
@@ -21,6 +22,7 @@ class Blog(db.Model):
         self.body = body
         self.owner = owner
 
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(120), unique=True)
@@ -31,20 +33,16 @@ class User(db.Model):
         self.username = username
         self.password = password
 
-# # TODO create a require_login
-# @app.before_request
-# def require_login():
-#     allowed_routes = ['login', 'signup', 'blog', 'index']
-#     if request.endpoint not in allowed_routes and 'username' not in session:
-#         return redirect('/login')
+
+@app.before_request
+def require_login():
+    allowed_routes = ['login', 'signup', 'blog', 'index']
+    if request.endpoint not in allowed_routes and 'username' not in session:
+        return redirect('/login')
 
 
-@app.route('/signup', methods=['GET'])
+@app.route("/signup", methods=['POST', 'GET'])
 def signup():
-    return render_template('signup.html')
-
-@app.route("/signup", methods=['POST'])
-def validate_signup():
     
     if request.method == 'POST':
         username = request.form['username']
@@ -85,6 +83,8 @@ def validate_signup():
         else:
             return render_template('signup.html', password_error=password_error, password_conf_error=password_check_error, username_error=username_error, username=username)
 
+    return render_template('signup.html')
+
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
@@ -101,12 +101,18 @@ def login():
 
     return render_template('login.html')
 
-## TODO create a / index route handler function
+
+@app.route('/')
+def index():
+    users = User.query.all()
+    return render_template('index.html', users=users)
+
 
 @app.route('/logout')
 def logout():
     del session['username']
     return redirect('/blog')
+
 
 @app.route('/new_entry', methods=['POST', 'GET'])
 def new_entry():
@@ -131,19 +137,26 @@ def new_entry():
 
     return render_template('new_entry.html', title=title)
 
+
 def get_logged_in_user():
     return User.query.filter_by(username=session['username']).first()
 
-@app.route('/blog', methods=['POST', 'GET'])
-def index():
 
+@app.route('/blog', methods=['POST', 'GET'])
+def blog():
     blogs = Blog.query.all()
+    users = User.query.all()
     if request.args:
         blog_id = request.args.get('id')
-        blog = Blog.query.get(blog_id)
-        return render_template('blog_entry.html', blog=blog)
+        user_id = request.args.get('user')
+        if blog_id:
+            blog = Blog.query.get(blog_id)
+            return render_template('blog_entry.html', blog=blog, users=users)
+        else:
+            user = User.query.filter_by(id=user_id).first()
+            return render_template('singleUser.html', user=user, blogs=blogs)
     else:
-        return render_template('blog.html', title='Build A Blog', blogs=blogs)
+        return render_template('blog.html', title='Blogz', blogs=blogs, users=users)
 
 
 if __name__ == '__main__':
